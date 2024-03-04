@@ -1,14 +1,68 @@
+import { requiredAuth } from "@/auth/helper";
+import { prisma } from "@/prisma";
 import { NextResponse } from "next/server";
 import { PostSchema } from "../../(layout)/dashboard/posts/new/post.schema";
+import { generatePowerPost } from "./generate-powerpost";
+import { generateTitle } from "./generate-title";
+import { scrapPost } from "./scrap-post";
 
 export const POST = async (req: Request) => {
-  const body = await req.json();
+  try {
+    const body = await req.json();
+    const session = await requiredAuth();
 
-  console.log("body", body);
+    const data = PostSchema.parse(body);
 
-  const data = PostSchema.parse(body);
+    const { coverUrl, markdown } = await scrapPost(data.source);
 
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+    console.log({ coverUrl });
 
-  return NextResponse.json(data);
+    const powerPost = await generatePowerPost({
+      markdown,
+      mode: data.mode,
+      language: data.language,
+    });
+
+    console.log({
+      powerPost: powerPost.length,
+      markdown: markdown.length,
+    });
+
+    const title = await generateTitle({
+      powerpost: powerPost,
+      language: data.language,
+    });
+
+    const finalPost = await prisma.post.create({
+      data: {
+        content: markdown,
+        source: data.source,
+        title,
+        coverUrl,
+        id:
+          title.replaceAll(" ", "-").toLowerCase() +
+          "-" +
+          Math.random().toString(36).substring(7),
+        userId: session.id,
+      },
+    });
+
+    return NextResponse.json(finalPost);
+  } catch (e) {
+    if (e instanceof Error) {
+      return NextResponse.json(
+        {
+          error: e.message,
+        },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        error: "An error occured",
+      },
+      { status: 400 }
+    );
+  }
 };
