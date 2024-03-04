@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils";
 import { PostMode } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import { AlertTriangle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { PostFormLoader } from "./PostFormLoader";
 import { LANGUAGES, PostModeDataMap } from "./post.const";
 import { PostSchema } from "./post.schema";
@@ -41,6 +42,7 @@ export const PostForm = (props: PostFormProps) => {
       language: "English",
     },
   });
+  const router = useRouter();
 
   const postMutation = useMutation({
     mutationFn: async (values: PostSchema) => {
@@ -56,6 +58,9 @@ export const PostForm = (props: PostFormProps) => {
       }
 
       return json;
+    },
+    onSuccess: (data) => {
+      router.push("/dashboard/posts");
     },
   });
 

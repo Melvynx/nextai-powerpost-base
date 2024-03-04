@@ -1,7 +1,7 @@
-import { Header } from "@/components/features/layout/Header";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import "./code-theme.scss";
 import "./globals.css";
 import { Providers } from "./providers";
 

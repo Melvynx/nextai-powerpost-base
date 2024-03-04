@@ -1,4 +1,4 @@
-import { auth } from "@/auth/helper";
+import { requiredAuth } from "@/auth/helper";
 import {
   Layout,
   LayoutContent,
@@ -6,10 +6,17 @@ import {
   LayoutHeader,
   LayoutTitle,
 } from "@/components/features/layout/layout";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { prisma } from "@/prisma";
+import Link from "next/link";
 
 export default async function Page() {
-  const user = await auth();
+  const user = await requiredAuth();
+  const posts = await prisma.post.findMany({
+    where: {
+      userId: user.id,
+    },
+  });
   return (
     <Layout>
       <LayoutHeader>
@@ -18,7 +25,18 @@ export default async function Page() {
       </LayoutHeader>
       <LayoutContent className="flex flex-col gap-4">
         <Card>
-          <CardHeader>posts card here...</CardHeader>
+          <CardHeader>
+            <CardTitle>Your posts</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul>
+              {posts.map((post) => (
+                <li key={post.id}>
+                  <Link href={`/posts/${post.id}`}>{post.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
         </Card>
       </LayoutContent>
     </Layout>

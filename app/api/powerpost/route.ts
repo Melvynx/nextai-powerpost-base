@@ -37,12 +37,10 @@ export const POST = async (req: Request) => {
       data: {
         content: markdown,
         source: data.source,
+        powerPost: powerPost,
         title,
         coverUrl,
-        id:
-          title.replaceAll(" ", "-").toLowerCase() +
-          "-" +
-          Math.random().toString(36).substring(7),
+        id: getId(title),
         userId: session.id,
       },
     });
@@ -65,4 +63,14 @@ export const POST = async (req: Request) => {
       { status: 400 }
     );
   }
+};
+
+const getId = (title: string) => {
+  const cleanedTitle = title
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Supprimer les accents
+    .replace(/[^a-zA-Z0-9]/g, "_") // Remplacer les caractères spéciaux par des underscores
+    .toLowerCase(); // Convertir en minuscules pour uniformité
+
+  return cleanedTitle + Math.random().toString(36).substring(7);
 };
