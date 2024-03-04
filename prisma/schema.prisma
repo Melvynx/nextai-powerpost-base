@@ -43,6 +43,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  posts         Post[]
 }
 
 model VerificationToken {
@@ -51,4 +52,38 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// Posts
+
+model Post {
+  id        String   @id @default(cuid())
+  // The url of the original post
+  source    String
+  // The content of the post
+  content   String
+  // The title of the post
+  title     String
+  // The mode of the resume by AI
+  mode      PostMode @default(SHORT)
+  // The resume of the post
+  powerPost String?
+  // The image of the post
+  coverUrl  String?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum PostMode {
+  SHORT
+  TWEET
+  THREAD
+  BULLET_POINT
+  TOP3
+  MAIN_POINTS
+  CODE
 }
