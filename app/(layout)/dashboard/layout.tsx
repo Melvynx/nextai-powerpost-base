@@ -5,7 +5,7 @@ import { PropsWithChildren } from "react";
 export default function NextLayout(props: PropsWithChildren) {
   return (
     <div className="max-w-5xl m-auto px-4 h-full">
-      <Layout asChild>
+      <Layout asChild className="mt-4">
         <nav>
           <Link
             href="/dashboard/posts"
