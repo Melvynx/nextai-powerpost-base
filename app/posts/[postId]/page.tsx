@@ -45,7 +45,7 @@ export default async function Page({
             }}
           >
             <div className="flex flex-col gap-2 bg-background/50 p-8 lg:p-12">
-              <LayoutTitle>Post page reader</LayoutTitle>
+              <LayoutTitle>{post.title}</LayoutTitle>
               <Alert className="bg-card/50">
                 <AlertTitle>
                   This post is a resume of{" "}

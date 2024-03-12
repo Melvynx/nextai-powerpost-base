@@ -8,7 +8,7 @@ import {
 } from "@/components/features/layout/layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/prisma";
-import Link from "next/link";
+import { PowerPostCard } from "./PowerPostCard";
 
 export default async function Page() {
   const user = await requiredAuth();
@@ -28,14 +28,10 @@ export default async function Page() {
           <CardHeader>
             <CardTitle>Your posts</CardTitle>
           </CardHeader>
-          <CardContent>
-            <ul>
-              {posts.map((post) => (
-                <li key={post.id}>
-                  <Link href={`/posts/${post.id}`}>{post.title}</Link>
-                </li>
-              ))}
-            </ul>
+          <CardContent className="flex flex-col gap-2">
+            {posts.map((post) => (
+              <PowerPostCard post={post} key={post.id} />
+            ))}
           </CardContent>
         </Card>
       </LayoutContent>
