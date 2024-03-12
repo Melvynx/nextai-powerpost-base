@@ -11,6 +11,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import rehypePrism from "rehype-prism-plus";
 import { ArticleWrapper } from "./ArticleWrapper";
+import { ChatPopover } from "./chat/ChatPopover";
 import { PostConfig } from "./PostConfig";
 import { ThemeWrapper } from "./ThemeWrapper";
 import Styles from "./theme.module.css";
@@ -74,6 +75,7 @@ export default async function Page({
           </ArticleWrapper>
         </LayoutContent>
       </Layout>
+      <ChatPopover />
     </ThemeWrapper>
   );
 }
