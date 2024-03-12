@@ -10,15 +10,24 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Loader } from "@/components/ui/loader";
 import { useMutation } from "@tanstack/react-query";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { CreditCard, LayoutDashboard, LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import type { PropsWithChildren } from "react";
+import { managePlanAction } from "./manage-plan.action";
 
 export const UserDropdown = ({ children }: PropsWithChildren) => {
   const logout = useMutation({
     mutationFn: async () => {
       signOut();
+    },
+  });
+  const router = useRouter();
+  const managePlanMutation = useMutation({
+    mutationFn: async () => {
+      const url = await managePlanAction();
+      router.push(url);
     },
   });
 
@@ -31,6 +40,14 @@ export const UserDropdown = ({ children }: PropsWithChildren) => {
             <LayoutDashboard className="mr-2 h-4 w-4" />
             Dashboard
           </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            managePlanMutation.mutate();
+          }}
+        >
+          <CreditCard className="mr-2 h-4 w-4" />
+          Manage plan
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />

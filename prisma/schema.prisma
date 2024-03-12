@@ -44,6 +44,9 @@ model User {
   accounts      Account[]
   sessions      Session[]
   posts         Post[]
+
+  credits          Int     @default(2)
+  stripeCustomerId String?
 }
 
 model VerificationToken {

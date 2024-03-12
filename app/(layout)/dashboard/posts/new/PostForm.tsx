@@ -26,6 +26,7 @@ import { PostMode } from "@prisma/client";
 import { useMutation } from "@tanstack/react-query";
 import { AlertTriangle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { PostFormLoader } from "./PostFormLoader";
 import { LANGUAGES, PostModeDataMap } from "./post.const";
 import { PostSchema } from "./post.schema";
@@ -61,6 +62,9 @@ export const PostForm = (props: PostFormProps) => {
     },
     onSuccess: (data) => {
       router.push("/dashboard/posts");
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 

@@ -50,6 +50,7 @@
     "rehype-prism-plus": "^2.0.0",
     "sass": "^1.71.1",
     "sonner": "^1.4.2",
+    "stripe": "^14.20.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4",

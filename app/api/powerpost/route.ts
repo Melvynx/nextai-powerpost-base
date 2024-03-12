@@ -10,12 +10,18 @@ export const POST = async (req: Request) => {
   try {
     const body = await req.json();
     const session = await requiredAuth();
+    if (session.credits <= 0) {
+      return NextResponse.json(
+        {
+          error: "You don't have enough credits",
+        },
+        { status: 400 }
+      );
+    }
 
     const data = PostSchema.parse(body);
 
     const { coverUrl, markdown } = await scrapPost(data.source);
-
-    console.log({ coverUrl });
 
     const powerPost = await generatePowerPost({
       markdown,
@@ -42,6 +48,17 @@ export const POST = async (req: Request) => {
         coverUrl,
         id: getId(title),
         userId: session.id,
+      },
+    });
+
+    await prisma.user.update({
+      where: {
+        id: session.id,
+      },
+      data: {
+        credits: {
+          decrement: 1,
+        },
       },
     });
 
