@@ -1,9 +1,11 @@
+import { Header } from "@/components/features/layout/Header";
 import { buttonVariants } from "@/components/ui/button";
 import { ArrowRight, Video } from "lucide-react";
 
 export default function Home() {
   return (
     <main>
+      <Header />
       <section className="bg-background">
         <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
           <a

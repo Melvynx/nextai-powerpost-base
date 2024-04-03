@@ -1,11 +1,11 @@
-import { openai } from "@/openai";
+import { AI_MODEL, openai } from "@/openai";
 
 export const generateTitle = async (params: {
   powerpost: string;
   language: string;
 }) => {
   const result = await openai.chat.completions.create({
-    model: "gpt-4-1106-preview",
+    model: AI_MODEL,
     messages: [
       {
         role: "system",

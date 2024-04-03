@@ -1,5 +1,5 @@
 import { requiredAuth } from "@/auth/helper";
-import { openai } from "@/openai";
+import { AI_MODEL, openai } from "@/openai";
 import { prisma } from "@/prisma";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import { NextRequest, NextResponse } from "next/server";
@@ -71,8 +71,10 @@ ${post.content}
 
   messages.push(...body.messages.slice(-5));
 
+  console.log({ messages });
+
   const response = await openai.chat.completions.create({
-    model: "gpt-4",
+    model: AI_MODEL,
     temperature: 0.7,
     messages: messages as never,
     stream: true,

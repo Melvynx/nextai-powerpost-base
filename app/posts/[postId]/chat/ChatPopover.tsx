@@ -29,12 +29,7 @@ export const ChatPopover = () => {
   const [open, setOpen] = useState(false);
   const params = useParams();
   const postId = params.postId;
-  const [messages, setMessages] = useState<MessagesType>([
-    {
-      content: "Hello! How can I help you?",
-      role: "assistant",
-    },
-  ]);
+  const [messages, setMessages] = useState<MessagesType>([]);
   const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(true);
   const messagesContainer = useRef<HTMLDivElement>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
